@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+
+[phases.install]
+# --include=dev : install devDependencies (vite, esbuild) even in CI/production env
+# --legacy-peer-deps : tolerate peer dep conflicts
+# No --ignore-scripts : esbuild/vite need post-install scripts to create bin links
+cmds = ["npm install --legacy-peer-deps --include=dev"]
+
+[phases.build]
+cmds = ["npm run build:railway"]
+
+[start]
+cmd = "npx serve -s dist -l $PORT"
