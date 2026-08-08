@@ -121,10 +121,31 @@
   }
   /* Light glass card for dashboard theme */
   .dashboard-theme .glass-card {
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(16px);
-    border: 1px solid hsl(var(--border));
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    background: #ffffff !important;
+    backdrop-filter: none;
+    border: 1px solid #e8f5f3;
+    box-shadow: 0 1px 6px rgba(2, 121, 107, 0.07);
+  }
+  /* White inputs/selects inside dashboard */
+  .dashboard-theme input,
+  .dashboard-theme select,
+  .dashboard-theme textarea {
+    background: #ffffff !important;
+    border-color: #d1ece8 !important;
+    color: #1a2332 !important;
+  }
+  /* Secondary bg → white in dashboard */
+  .dashboard-theme .bg-secondary {
+    background-color: #f4faf9 !important;
+  }
+  /* Subtle teal hover rows */
+  .dashboard-theme tr:hover td,
+  .dashboard-theme .hover\:bg-secondary\/30:hover {
+    background-color: #f0faf8 !important;
+  }
+  /* Table header */
+  .dashboard-theme .bg-secondary\/50 {
+    background-color: #f4faf9 !important;
   }
   .teal-glow {
     box-shadow: 0 0 30px rgba(2, 121, 107, 0.25);

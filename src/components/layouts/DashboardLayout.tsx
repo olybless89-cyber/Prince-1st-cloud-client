@@ -109,7 +109,7 @@ export default function DashboardLayout() {
   return (
     <div className="dashboard-theme flex min-h-screen w-full" style={{ background: '#ffffff' }}>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-border" style={{ background: '#ffffff' }}>
+      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r-2 border-[#027976]" style={{ background: '#ffffff' }}>
         <NavContent />
       </aside>
 
