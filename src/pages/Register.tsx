@@ -77,7 +77,7 @@ export default function RegisterPage() {
             country: form.country,
             login_pin: form.login_pin,
           },
-          emailRedirectTo: 'https://skybordbank.com/dashboard',
+          emailRedirectTo: 'https://grayhavenbk.com/dashboard',
         },
       });
       if (signUpErr) throw signUpErr;
