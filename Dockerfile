@@ -25,8 +25,10 @@ FROM nginx:alpine AS runner
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# SPA config: every path falls back to index.html; PORT is injected at runtime
-RUN printf 'server {\n  listen ${PORT};\n  root /usr/share/nginx/html;\n  index index.html;\n  location / {\n    try_files $uri $uri/ /index.html;\n  }\n}\n' \
-    > /etc/nginx/conf.d/default.conf.template
+# Write the nginx config directly at build time using a fixed port placeholder.
+# We use __PORT__ as a safe sed token so shell never accidentally expands $PORT.
+RUN printf 'server {\n  listen __PORT__;\n  root /usr/share/nginx/html;\n  index index.html;\n  location / {\n    try_files $uri $uri/ /index.html;\n  }\n}\n' \
+    > /etc/nginx/conf.d/app.conf.template
 
-CMD ["/bin/sh", "-c", "envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+# At runtime: substitute __PORT__ with the real $PORT value via sed, then start nginx.
+CMD ["/bin/sh", "-c", "sed \"s/__PORT__/${PORT}/g\" /etc/nginx/conf.d/app.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
