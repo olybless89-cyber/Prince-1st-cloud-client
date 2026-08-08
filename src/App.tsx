@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import IntersectObserver from '@/components/common/IntersectObserver';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { RouteGuard } from '@/components/common/RouteGuard';
+import { RouteGuard, AdminGuard } from '@/components/common/RouteGuard';
 
 // Layouts
 import PublicLayout from '@/components/layouts/PublicLayout';
@@ -80,8 +80,8 @@ const App: React.FC = () => {
               <Route path="profile" element={<ProfilePage />} />
             </Route>
 
-            {/* Admin portal (role=admin check inside AdminLayout) */}
-            <Route path="/admin" element={<AdminLayout />}>
+            {/* Admin portal — AdminGuard blocks non-admins at route level */}
+            <Route path="/admin" element={<AdminGuard><AdminLayout /></AdminGuard>}>
               <Route index element={<AdminOverview />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="kyc" element={<AdminKYC />} />

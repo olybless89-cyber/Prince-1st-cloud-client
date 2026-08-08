@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -46,26 +46,15 @@ function NavItems({ onClick }: { onClick?: () => void }) {
 }
 
 export default function AdminLayout() {
-  const { profile, signOut, loading } = useAuth();
+  const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    if (!loading && profile && profile.role !== 'admin') {
-      toast.error('Access denied. Admin only.');
-      navigate('/dashboard', { replace: true });
-    }
-    if (!loading && !profile) {
-      navigate('/login', { replace: true });
-    }
-  }, [profile, loading, navigate]);
-
+  // AdminGuard already guarantees role=admin before this renders
   const handleSignOut = async () => {
     await signOut();
     navigate('/login');
   };
-
-  if (loading || !profile || profile.role !== 'admin') return null;
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
