@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, ArrowLeftRight, History, User,
-  Building2, LogOut, Menu, Settings, TrendingUp, Shield,
+  LogOut, Menu, Settings, TrendingUp, Shield,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import GrayHavenLogo from '@/components/common/GrayHavenLogo';
 
 const navItems = [
   { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -32,10 +33,7 @@ function NavContent({ onClose }: { onClose?: () => void }) {
     <div className="flex flex-col h-full">
       <div className="p-6 border-b border-border">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg" onClick={onClose}>
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <Building2 className="w-4 h-4 text-primary-foreground" />
-          </div>
-          <span><span className="text-primary">SKY-BORD</span> BANK</span>
+          <GrayHavenLogo size={32} />
         </Link>
       </div>
 
@@ -129,7 +127,7 @@ export default function DashboardLayout() {
           <Button variant="ghost" size="sm" onClick={() => setMobileOpen(true)}>
             <Menu className="w-5 h-5" />
           </Button>
-          <span className="font-semibold text-sm"><span className="text-primary">SKY-BORD</span> BANK</span>
+          <GrayHavenLogo size={28} />
           <div className="w-9" />
         </header>
         <main className="flex-1 overflow-x-hidden p-4 md:p-8">

@@ -74,7 +74,7 @@ export default function AdminLayout() {
           <Building2 className="w-5 h-5 text-primary-foreground" />
         </div>
         <div>
-          <div className="font-bold text-sm text-foreground leading-none">SKY-BORD BANK</div>
+          <div className="font-bold text-sm text-foreground leading-none">GRAY HAVEN BANK</div>
           <div className="text-xs text-destructive font-semibold mt-0.5">ADMIN PORTAL</div>
         </div>
       </div>

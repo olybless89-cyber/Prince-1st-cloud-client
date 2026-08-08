@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Twitter, Facebook, Instagram, Youtube, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Twitter, Facebook, Instagram, Youtube, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { subscribeNewsletter } from '@/services/api';
+import GrayHavenLogo from '@/components/common/GrayHavenLogo';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -32,10 +33,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 font-bold text-xl mb-4">
-              <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span><span className="text-primary">SKY-BORD</span> BANK</span>
+              <GrayHavenLogo size={36} />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               A digital-first financial institution dedicated to providing secure, innovative, and customer-centric banking solutions for a modern world.
@@ -72,7 +70,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <span>London Office, Skyboard Plaza, Westminster, SW1A 1AA</span>
+                <span>London Office, Gray Haven Plaza, Westminster, SW1A 1AA</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
@@ -80,7 +78,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <a href="mailto:support@skybordbank.com" className="hover:text-primary transition-colors">support@skybordbank.com</a>
+                <a href="mailto:support@grayhavenbk.com" className="hover:text-primary transition-colors">support@grayhavenbk.com</a>
               </li>
             </ul>
             <div className="mt-4 text-xs text-muted-foreground space-y-1">
@@ -109,7 +107,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>© 2026 SKY-BORD BANK. All rights reserved.</span>
+          <span>© 2026 Gray Haven Bank. All rights reserved.</span>
           <div className="flex items-center gap-4">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
