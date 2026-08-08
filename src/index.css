@@ -9,7 +9,7 @@
   :root {
     --radius: 0.75rem;
 
-    /* Gray Haven Bank – Dark Teal Institutional Theme */
+    /* Gray Haven Bank – Dark Teal Institutional Theme (public site) */
     --background: 222 47% 6%;
     --foreground: 210 40% 93%;
 
@@ -53,6 +53,43 @@
     --sidebar-border: 222 25% 18%;
     --sidebar-ring: 172 97% 24%;
   }
+
+  /* ── Dashboard light theme: white & cream ── */
+  .dashboard-theme {
+    --background: 0 0% 97%;           /* cream #F7F7F7 */
+    --foreground: 220 20% 18%;        /* near-black text */
+
+    --card: 0 0% 100%;                /* pure white cards */
+    --card-foreground: 220 20% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 18%;
+
+    --primary: 172 97% 24%;           /* keep teal accent */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 94%;         /* light grey */
+    --secondary-foreground: 220 20% 30%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 220 15% 50%;
+
+    --accent: 172 60% 92%;            /* very light teal tint */
+    --accent-foreground: 172 97% 20%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 88%;            /* soft grey border */
+    --input: 210 20% 88%;
+    --ring: 172 97% 24%;
+
+    --chart-1: 172 97% 24%;
+    --chart-2: 172 70% 40%;
+    --chart-3: 197 60% 45%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
 }
 
 @layer base {
@@ -81,6 +118,13 @@
     background: rgba(255,255,255,0.04);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255,255,255,0.08);
+  }
+  /* Light glass card for dashboard theme */
+  .dashboard-theme .glass-card {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
   .teal-glow {
     box-shadow: 0 0 30px rgba(2, 121, 107, 0.25);

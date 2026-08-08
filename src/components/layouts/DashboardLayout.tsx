@@ -30,7 +30,7 @@ function NavContent({ onClose }: { onClose?: () => void }) {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white">
       <div className="p-6 border-b border-border">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg" onClick={onClose}>
           <GrayHavenLogo size={32} />
@@ -38,8 +38,8 @@ function NavContent({ onClose }: { onClose?: () => void }) {
       </div>
 
       {/* User badge */}
-      <div className="p-4 mx-4 mt-4 rounded-xl bg-secondary">
-        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+      <div className="p-4 mx-4 mt-4 rounded-xl bg-[#f0faf9] border border-[#d0eeeb]">
+        <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center mb-2">
           <span className="text-primary font-bold text-sm">
             {(profile?.first_name?.[0] || profile?.username?.[0] || 'U').toUpperCase()}
           </span>
@@ -62,8 +62,8 @@ function NavContent({ onClose }: { onClose?: () => void }) {
             className={cn(
               'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
               pathname === href
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
             )}
           >
             <Icon className="w-4 h-4 shrink-0" />
@@ -91,7 +91,7 @@ function NavContent({ onClose }: { onClose?: () => void }) {
 
       <div className="p-4 border-t border-border flex flex-col gap-2">
         <Link to="/dashboard/profile" onClick={onClose}>
-          <Button variant="ghost" size="sm" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground">
+          <Button variant="ghost" size="sm" className="w-full justify-start gap-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100">
             <Settings className="w-4 h-4" /> Settings
           </Button>
         </Link>
@@ -107,15 +107,15 @@ export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full bg-background">
+    <div className="dashboard-theme flex min-h-screen w-full bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-border bg-card">
+      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-border bg-white shadow-sm">
         <NavContent />
       </aside>
 
       {/* Mobile sidebar */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="p-0 w-64 bg-card border-border">
+        <SheetContent side="left" className="p-0 w-64 bg-white border-border dashboard-theme">
           <NavContent onClose={() => setMobileOpen(false)} />
         </SheetContent>
       </Sheet>
@@ -123,14 +123,14 @@ export default function DashboardLayout() {
       {/* Main content */}
       <div className="flex-1 min-w-0 flex flex-col">
         {/* Mobile header */}
-        <header className="md:hidden flex items-center justify-between px-4 h-14 border-b border-border bg-card shrink-0">
+        <header className="md:hidden flex items-center justify-between px-4 h-14 border-b border-border bg-white shrink-0">
           <Button variant="ghost" size="sm" onClick={() => setMobileOpen(true)}>
             <Menu className="w-5 h-5" />
           </Button>
           <GrayHavenLogo size={28} />
           <div className="w-9" />
         </header>
-        <main className="flex-1 overflow-x-hidden p-4 md:p-8">
+        <main className="flex-1 overflow-x-hidden p-4 md:p-8 bg-background">
           <Outlet />
         </main>
       </div>
