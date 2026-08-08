@@ -30,7 +30,7 @@ function NavContent({ onClose }: { onClose?: () => void }) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full" style={{ background: '#ffffff' }}>
       <div className="p-6 border-b border-border">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg" onClick={onClose}>
           <GrayHavenLogo size={32} />
@@ -107,30 +107,30 @@ export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="dashboard-theme flex min-h-screen w-full bg-background">
+    <div className="dashboard-theme flex min-h-screen w-full" style={{ background: '#ffffff' }}>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-border bg-white shadow-sm">
+      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-border" style={{ background: '#ffffff' }}>
         <NavContent />
       </aside>
 
       {/* Mobile sidebar */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="p-0 w-64 bg-white border-border dashboard-theme">
+        <SheetContent side="left" className="p-0 w-64 border-border dashboard-theme" style={{ background: '#ffffff' }}>
           <NavContent onClose={() => setMobileOpen(false)} />
         </SheetContent>
       </Sheet>
 
       {/* Main content */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col" style={{ background: '#ffffff' }}>
         {/* Mobile header */}
-        <header className="md:hidden flex items-center justify-between px-4 h-14 border-b border-border bg-white shrink-0">
+        <header className="md:hidden flex items-center justify-between px-4 h-14 border-b border-border shrink-0" style={{ background: '#ffffff' }}>
           <Button variant="ghost" size="sm" onClick={() => setMobileOpen(true)}>
             <Menu className="w-5 h-5" />
           </Button>
           <GrayHavenLogo size={28} />
           <div className="w-9" />
         </header>
-        <main className="flex-1 overflow-x-hidden p-4 md:p-8 bg-background">
+        <main className="flex-1 overflow-x-hidden p-4 md:p-8" style={{ background: '#ffffff' }}>
           <Outlet />
         </main>
       </div>
