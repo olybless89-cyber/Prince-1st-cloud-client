@@ -95,8 +95,14 @@ export default function LoginPage() {
         navigate('/dashboard');
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Login failed';
-      toast.error(msg.includes('Invalid') ? 'Incorrect credentials. Please try again.' : msg);
+      const msg = (err instanceof Error ? err.message : 'Login failed').toLowerCase();
+      if (msg.includes('invalid login') || msg.includes('invalid credentials') || msg.includes('user not found') || msg.includes('does not exist')) {
+        toast.error('Incorrect PIN. Please try again.');
+      } else if (msg.includes('email not confirmed')) {
+        toast.error('Account not confirmed. Please contact support.');
+      } else {
+        toast.error('Login failed. Please try again.');
+      }
       setPin(['', '', '', '']);
       pinRefs.current[0]?.focus();
     } finally {
