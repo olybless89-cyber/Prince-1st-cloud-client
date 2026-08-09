@@ -45,11 +45,16 @@ export default function LoginPage() {
 
       // If not an email, look up the real email by username
       if (!emailToUse.includes('@')) {
-        const { data: profile } = await supabase
+        const { data: profile, error: lookupError } = await supabase
           .from('profiles')
           .select('email, id')
           .eq('username', emailToUse)
           .maybeSingle();
+        if (lookupError) {
+          toast.error('Could not verify username. Please try again.');
+          setLoading(false);
+          return;
+        }
         if (!profile?.email) {
           toast.error('Username not found. Please check and try again.');
           setLoading(false);
