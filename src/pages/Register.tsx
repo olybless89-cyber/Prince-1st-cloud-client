@@ -140,28 +140,31 @@ export default function RegisterPage() {
   const progress = ((step + 1) / 4) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0f20] via-[#013d36] to-[#0a0f20] flex items-center justify-center px-4 py-24">
+    <div className="min-h-screen flex items-center justify-center px-4 py-24" style={{ background: 'linear-gradient(135deg, #f0faf9 0%, #ffffff 50%, #f5fbfa 100%)' }}>
       <div className="w-full max-w-lg">
+        {/* Teal accent bar */}
+        <div className="h-1 w-24 bg-primary rounded-full mx-auto mb-8" />
+
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 font-bold text-xl mb-6">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-md">
+              <Building2 className="w-5 h-5 text-white" />
             </div>
-            <span><span className="text-primary">GRAY HAVEN</span> BANK</span>
+            <span><span className="text-primary">GRAY HAVEN</span> <span className="text-slate-800">BANK</span></span>
           </Link>
-          <div className="text-muted-foreground text-sm">Step {step + 1} of 4 — {STEP_TITLES[step]}</div>
+          <div className="text-slate-400 text-sm">Step {step + 1} of 4 — {STEP_TITLES[step]}</div>
         </div>
 
         {/* Progress */}
         <div className="relative mb-8">
-          <div className="w-full h-1.5 bg-secondary rounded-full">
+          <div className="w-full h-1.5 bg-[#e8f5f3] rounded-full">
             <div className="h-1.5 bg-primary rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
           </div>
           <div className="flex justify-between mt-3">
             {STEP_TITLES.map((t, i) => (
-              <div key={t} className={cn('flex flex-col items-center gap-1', i <= step ? 'text-primary' : 'text-muted-foreground')}>
-                <div className={cn('w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2', i < step ? 'bg-primary border-primary text-primary-foreground' : i === step ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+              <div key={t} className={cn('flex flex-col items-center gap-1', i <= step ? 'text-primary' : 'text-slate-400')}>
+                <div className={cn('w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2', i < step ? 'bg-primary border-primary text-white' : i === step ? 'border-primary text-primary bg-white' : 'border-[#cce8e3] text-slate-400 bg-white')}>
                   {i < step ? <Check className="w-3 h-3" /> : i + 1}
                 </div>
                 <span className="text-xs hidden sm:block">{t}</span>
@@ -170,26 +173,26 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <div className="glass-card rounded-3xl p-8 border border-white/10 shadow-2xl">
+        <div className="bg-white rounded-3xl p-8 shadow-[0_4px_32px_rgba(2,121,107,0.10)] border border-[#e2f0ee]">
           <form onSubmit={step === 3 ? handleSubmit : (e) => { e.preventDefault(); setStep((s) => s + 1); }}>
             {/* Step 1 */}
             {step === 0 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-foreground mb-6">Personal Information</h3>
+                <h3 className="text-xl font-bold text-slate-800 mb-6">Personal Information</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div><label className="label-sm">First Name</label><Input placeholder="John" value={form.fname} onChange={(e) => set('fname', e.target.value)} className="bg-secondary border-border" required /></div>
-                  <div><label className="label-sm">Last Name</label><Input placeholder="Smith" value={form.lname} onChange={(e) => set('lname', e.target.value)} className="bg-secondary border-border" required /></div>
+                  <div><label className="block text-xs font-semibold text-slate-500 mb-2">First Name</label><Input placeholder="John" value={form.fname} onChange={(e) => set('fname', e.target.value)} className="bg-white border-[#cce8e3] text-slate-800" required /></div>
+                  <div><label className="block text-xs font-semibold text-slate-500 mb-2">Last Name</label><Input placeholder="Smith" value={form.lname} onChange={(e) => set('lname', e.target.value)} className="bg-white border-[#cce8e3] text-slate-800" required /></div>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">Gender</label>
-                  <select value={form.gender} onChange={(e) => set('gender', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-secondary border border-border text-foreground text-sm" required>
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">Gender</label>
+                  <select value={form.gender} onChange={(e) => set('gender', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-white border border-[#cce8e3] text-slate-800 text-sm" required>
                     <option value="">Select Gender</option>
                     {['Male','Female','Other'].map((g) => <option key={g}>{g}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">Date of Birth</label>
-                  <Input type="date" value={form.dob} onChange={(e) => set('dob', e.target.value)} className="bg-secondary border-border" required />
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">Date of Birth</label>
+                  <Input type="date" value={form.dob} onChange={(e) => set('dob', e.target.value)} className="bg-white border-[#cce8e3] text-slate-800" required />
                 </div>
               </div>
             )}
@@ -197,55 +200,55 @@ export default function RegisterPage() {
             {/* Step 2 */}
             {step === 1 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-foreground mb-6">Contact Information</h3>
+                <h3 className="text-xl font-bold text-slate-800 mb-6">Contact Information</h3>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">Country</label>
-                  <select value={form.country} onChange={(e) => set('country', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-secondary border border-border text-foreground text-sm" required>
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">Country</label>
+                  <select value={form.country} onChange={(e) => set('country', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-white border border-[#cce8e3] text-slate-800 text-sm" required>
                     <option value="">Select Country</option>
                     {COUNTRIES.map((c) => <option key={c}>{c}</option>)}
                   </select>
                 </div>
-                <div><label className="block text-xs font-semibold text-muted-foreground mb-2">Email Address</label><Input type="email" placeholder="john@example.com" value={form.email} onChange={(e) => set('email', e.target.value)} className="bg-secondary border-border" required /></div>
-                <div><label className="block text-xs font-semibold text-muted-foreground mb-2">Phone Number</label><Input placeholder="+1 234 567 890" value={form.phone} onChange={(e) => set('phone', e.target.value)} className="bg-secondary border-border" required /></div>
+                <div><label className="block text-xs font-semibold text-slate-500 mb-2">Email Address</label><Input type="email" placeholder="john@example.com" value={form.email} onChange={(e) => set('email', e.target.value)} className="bg-white border-[#cce8e3] text-slate-800" required /></div>
+                <div><label className="block text-xs font-semibold text-slate-500 mb-2">Phone Number</label><Input placeholder="+1 234 567 890" value={form.phone} onChange={(e) => set('phone', e.target.value)} className="bg-white border-[#cce8e3] text-slate-800" required /></div>
               </div>
             )}
 
             {/* Step 3 */}
             {step === 2 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-foreground mb-6">Account Setup & KYC</h3>
+                <h3 className="text-xl font-bold text-slate-800 mb-6">Account Setup & KYC</h3>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">Account Currency</label>
-                  <select value={form.currency} onChange={(e) => set('currency', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-secondary border border-border text-foreground text-sm">
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">Account Currency</label>
+                  <select value={form.currency} onChange={(e) => set('currency', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-white border border-[#cce8e3] text-slate-800 text-sm">
                     {CURRENCIES.map((c) => <option key={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">Account Type</label>
-                  <select value={form.account_type} onChange={(e) => set('account_type', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-secondary border border-border text-foreground text-sm capitalize">
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">Account Type</label>
+                  <select value={form.account_type} onChange={(e) => set('account_type', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-white border border-[#cce8e3] text-slate-800 text-sm capitalize">
                     {ACCOUNT_TYPES.map((t) => <option key={t} value={t} className="capitalize">{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">Preferred Branch</label>
-                  <select value={form.branch} onChange={(e) => set('branch', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-secondary border border-border text-foreground text-sm" required>
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">Preferred Branch</label>
+                  <select value={form.branch} onChange={(e) => set('branch', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-white border border-[#cce8e3] text-slate-800 text-sm" required>
                     <option value="">Select Branch</option>
                     {BRANCHES.map((b) => <option key={b}>{b}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">ID Card Type</label>
-                  <select value={form.id_card_type} onChange={(e) => set('id_card_type', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-secondary border border-border text-foreground text-sm" required>
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">ID Card Type</label>
+                  <select value={form.id_card_type} onChange={(e) => set('id_card_type', e.target.value)} className="w-full h-10 px-3 rounded-lg bg-white border border-[#cce8e3] text-slate-800 text-sm" required>
                     <option value="">Select ID Type</option>
                     {ID_TYPES.map((t) => <option key={t}>{t}</option>)}
                   </select>
                 </div>
                 {[['Front', frontFile, setFrontFile], ['Back', backFile, setBackFile]].map(([label, file, setter]) => (
                   <div key={label as string}>
-                    <label className="block text-xs font-semibold text-muted-foreground mb-2">ID Card {label as string}</label>
-                    <label className={cn('flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-colors', (file as File) ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50 bg-secondary')}>
+                    <label className="block text-xs font-semibold text-slate-500 mb-2">ID Card {label as string}</label>
+                    <label className={cn('flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-colors', (file as File) ? 'border-primary bg-primary/5' : 'border-[#cce8e3] hover:border-primary/50 bg-[#f8fdfc]')}>
                       <input type="file" className="sr-only" accept="image/*,application/pdf" onChange={(e) => (setter as React.Dispatch<React.SetStateAction<File | null>>)(e.target.files?.[0] ?? null)} />
-                      {(file as File) ? <><Check className="w-6 h-6 text-primary mb-1" /><span className="text-xs text-primary">{(file as File).name}</span></> : <><Upload className="w-6 h-6 text-muted-foreground mb-1" /><span className="text-xs text-muted-foreground">Click to upload</span></>}
+                      {(file as File) ? <><Check className="w-6 h-6 text-primary mb-1" /><span className="text-xs text-primary">{(file as File).name}</span></> : <><Upload className="w-6 h-6 text-slate-400 mb-1" /><span className="text-xs text-slate-400">Click to upload</span></>}
                     </label>
                   </div>
                 ))}
@@ -255,17 +258,17 @@ export default function RegisterPage() {
             {/* Step 4 */}
             {step === 3 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-foreground mb-6">Security Setup</h3>
-                <div><label className="block text-xs font-semibold text-muted-foreground mb-2">Username</label><Input placeholder="johnsmith" value={form.username} onChange={(e) => set('username', e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} className="bg-secondary border-border" required /></div>
-                <div><label className="block text-xs font-semibold text-muted-foreground mb-2">Password</label><Input type="password" placeholder="••••••••" value={form.password} onChange={(e) => set('password', e.target.value)} className="bg-secondary border-border" required /></div>
+                <h3 className="text-xl font-bold text-slate-800 mb-6">Security Setup</h3>
+                <div><label className="block text-xs font-semibold text-slate-500 mb-2">Username</label><Input placeholder="johnsmith" value={form.username} onChange={(e) => set('username', e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} className="bg-white border-[#cce8e3] text-slate-800" required /></div>
+                <div><label className="block text-xs font-semibold text-slate-500 mb-2">Password</label><Input type="password" placeholder="••••••••" value={form.password} onChange={(e) => set('password', e.target.value)} className="bg-white border-[#cce8e3] text-slate-800" required /></div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-2">4-Digit Login PIN</label>
-                  <Input type="password" placeholder="••••" maxLength={4} inputMode="numeric" pattern="[0-9]{4}" value={form.login_pin} onChange={(e) => set('login_pin', e.target.value.replace(/\D/g, '').slice(0, 4))} className="bg-secondary border-border tracking-widest text-center text-xl" required />
-                  <p className="text-xs text-muted-foreground mt-1">This PIN is used to log in to your account.</p>
+                  <label className="block text-xs font-semibold text-slate-500 mb-2">4-Digit Login PIN</label>
+                  <Input type="password" placeholder="••••" maxLength={4} inputMode="numeric" pattern="[0-9]{4}" value={form.login_pin} onChange={(e) => set('login_pin', e.target.value.replace(/\D/g, '').slice(0, 4))} className="bg-white border-[#cce8e3] text-slate-800 tracking-widest text-center text-xl" required />
+                  <p className="text-xs text-slate-400 mt-1">This PIN is used to log in to your account.</p>
                 </div>
                 <div className="flex items-start gap-3 mt-2">
                   <input type="checkbox" id="agree" checked={form.agree} onChange={(e) => set('agree', e.target.checked)} className="mt-1 accent-primary" />
-                  <label htmlFor="agree" className="text-xs text-muted-foreground">
+                  <label htmlFor="agree" className="text-xs text-slate-500">
                     I agree to the{' '}
                     <a href="#" className="text-primary hover:underline">User Agreement</a> and{' '}
                     <a href="#" className="text-primary hover:underline">Privacy Policy</a>
@@ -277,18 +280,18 @@ export default function RegisterPage() {
             {/* Navigation */}
             <div className="flex items-center justify-between mt-8 gap-3">
               {step > 0 ? (
-                <Button type="button" variant="ghost" onClick={() => setStep((s) => s - 1)} className="border border-border text-muted-foreground hover:text-foreground">
+                <Button type="button" variant="ghost" onClick={() => setStep((s) => s - 1)} className="border border-[#cce8e3] text-slate-500 hover:text-slate-800">
                   <ChevronLeft className="w-4 h-4 mr-1" /> Back
                 </Button>
               ) : <div />}
-              <Button type="submit" disabled={loading} className="bg-primary text-primary-foreground hover:bg-primary/90 px-8">
+              <Button type="submit" disabled={loading} className="bg-primary text-white hover:bg-primary/90 px-8 font-semibold shadow-sm">
                 {step < 3 ? <><span>Next Step</span><ChevronRight className="w-4 h-4 ml-1" /></> : loading ? 'Creating...' : 'Create Account'}
               </Button>
             </div>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign In</Link>
+          <p className="text-center text-sm text-slate-400 mt-6">
+            Already have an account? <Link to="/login" className="text-primary hover:underline font-semibold">Sign In</Link>
           </p>
         </div>
       </div>
