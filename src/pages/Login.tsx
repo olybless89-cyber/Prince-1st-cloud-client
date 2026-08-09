@@ -81,8 +81,19 @@ export default function LoginPage() {
         }).catch(() => null);
       }
 
+      // Fetch profile to determine role and redirect correctly
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .maybeSingle();
+
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      if (profileData?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Login failed';
       toast.error(msg.includes('Invalid') ? 'Incorrect credentials. Please try again.' : msg);
