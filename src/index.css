@@ -56,39 +56,27 @@
 
   /* ── Dashboard light theme: pure white ── */
   .dashboard-theme {
-    --background: 0 0% 100%;          /* pure white #FFFFFF */
-    --foreground: 220 20% 18%;        /* near-black text */
-
-    --card: 0 0% 100%;                /* pure white cards */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 18%;
+    --card: 0 0% 100%;
     --card-foreground: 220 20% 18%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 18%;
-
-    --primary: 172 97% 24%;           /* keep teal accent */
+    --primary: 172 97% 24%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 20% 96%;         /* very light grey for subtle areas */
+    --secondary: 0 0% 96%;
     --secondary-foreground: 220 20% 30%;
-
-    --muted: 210 20% 96%;
+    --muted: 0 0% 96%;
     --muted-foreground: 220 15% 50%;
-
-    --accent: 172 60% 92%;            /* very light teal tint */
+    --accent: 172 60% 95%;
     --accent-foreground: 172 97% 20%;
-
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 210 20% 90%;            /* soft grey border */
-    --input: 210 20% 90%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
     --ring: 172 97% 24%;
-
-    --chart-1: 172 97% 24%;
-    --chart-2: 172 70% 40%;
-    --chart-3: 197 60% 45%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    background-color: #ffffff !important;
+    color: #1a2332 !important;
   }
 }
 
@@ -119,34 +107,54 @@
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255,255,255,0.08);
   }
-  /* Light glass card for dashboard theme */
+  /* ═══ Dashboard: force ALL backgrounds to white ═══ */
+  /* Every dark Tailwind bg class overridden inside dashboard-theme */
+  .dashboard-theme,
+  .dashboard-theme .bg-background,
+  .dashboard-theme .bg-card,
+  .dashboard-theme .bg-popover,
+  .dashboard-theme .bg-secondary,
+  .dashboard-theme .bg-muted,
+  .dashboard-theme .bg-accent {
+    background-color: #ffffff !important;
+  }
   .dashboard-theme .glass-card {
     background: #ffffff !important;
-    backdrop-filter: none;
-    border: 1px solid #e8f5f3;
-    box-shadow: 0 1px 6px rgba(2, 121, 107, 0.07);
+    backdrop-filter: none !important;
+    border: 1px solid #e2eeec !important;
+    box-shadow: 0 1px 6px rgba(2, 121, 107, 0.08) !important;
   }
-  /* White inputs/selects inside dashboard */
-  .dashboard-theme input,
-  .dashboard-theme select,
-  .dashboard-theme textarea {
-    background: #ffffff !important;
-    border-color: #d1ece8 !important;
+  /* Subtle teal-tinted areas (secondary/muted at reduced opacity) */
+  .dashboard-theme .bg-secondary\/50,
+  .dashboard-theme .bg-secondary\/30,
+  .dashboard-theme .bg-muted\/50,
+  .dashboard-theme .bg-muted\/30 {
+    background-color: #f2faf8 !important;
+  }
+  /* Hover states */
+  .dashboard-theme .hover\:bg-secondary\/30:hover,
+  .dashboard-theme .hover\:bg-secondary:hover,
+  .dashboard-theme .hover\:bg-muted:hover,
+  .dashboard-theme tr:hover td {
+    background-color: #edf7f5 !important;
+  }
+  /* Inputs, selects, textareas */
+  .dashboard-theme input:not([class*="bg-"]),
+  .dashboard-theme select:not([class*="bg-"]),
+  .dashboard-theme textarea:not([class*="bg-"]),
+  .dashboard-theme .bg-secondary input,
+  .dashboard-theme .bg-secondary select,
+  .dashboard-theme input.bg-secondary,
+  .dashboard-theme select.bg-secondary {
+    background-color: #ffffff !important;
+    border-color: #cce8e3 !important;
     color: #1a2332 !important;
   }
-  /* Secondary bg → white in dashboard */
-  .dashboard-theme .bg-secondary {
-    background-color: #f4faf9 !important;
-  }
-  /* Subtle teal hover rows */
-  .dashboard-theme tr:hover td,
-  .dashboard-theme .hover\:bg-secondary\/30:hover {
-    background-color: #f0faf8 !important;
-  }
-  /* Table header */
-  .dashboard-theme .bg-secondary\/50 {
-    background-color: #f4faf9 !important;
-  }
+  /* Text colours inside dashboard */
+  .dashboard-theme .text-foreground { color: #1a2332 !important; }
+  .dashboard-theme .text-muted-foreground { color: #6b7a8d !important; }
+  /* Border colours */
+  .dashboard-theme .border-border { border-color: #dde8e6 !important; }
   .teal-glow {
     box-shadow: 0 0 30px rgba(2, 121, 107, 0.25);
   }
