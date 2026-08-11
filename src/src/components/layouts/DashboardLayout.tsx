@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, ArrowLeftRight, History, User,
+  ArrowDownLeft, ArrowUpRight, CreditCard,
   LogOut, Menu, Settings, TrendingUp, Shield,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,10 +13,13 @@ import GrayHavenLogo from '@/components/common/GrayHavenLogo';
 
 const navItems = [
   { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Transactions', href: '/dashboard/transactions', icon: History },
+  { label: 'Deposit', href: '/dashboard/deposit', icon: ArrowDownLeft },
+  { label: 'Withdraw', href: '/dashboard/withdrawal', icon: ArrowUpRight },
   { label: 'Transfer', href: '/dashboard/transfer', icon: ArrowLeftRight },
+  { label: 'Transactions', href: '/dashboard/transactions', icon: History },
   { label: 'Investments', href: '/dashboard/investments', icon: TrendingUp },
   { label: 'Profile', href: '/dashboard/profile', icon: User },
+  { label: 'Debit Card', href: '/dashboard/debit-card', icon: CreditCard },
 ];
 
 function NavContent({ onClose }: { onClose?: () => void }) {

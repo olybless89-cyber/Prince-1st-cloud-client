@@ -40,6 +40,14 @@ import AdminOverview from '@/pages/admin/AdminOverview';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import AdminKYC from '@/pages/admin/AdminKYC';
 import AdminTransactions from '@/pages/admin/AdminTransactions';
+import AdminDeposits from '@/pages/admin/AdminDeposits';
+import AdminWithdrawals from '@/pages/admin/AdminWithdrawals';
+import AdminDebitCards from '@/pages/admin/AdminDebitCards';
+
+// New dashboard pages
+import DepositPage from '@/pages/dashboard/Deposit';
+import WithdrawalPage from '@/pages/dashboard/Withdrawal';
+import DebitCardPage from '@/pages/dashboard/DebitCard';
 
 // 404
 import NotFound from '@/pages/NotFound';
@@ -76,6 +84,9 @@ const App: React.FC = () => {
               <Route index element={<DashboardOverview />} />
               <Route path="transactions" element={<TransactionsPage />} />
               <Route path="transfer" element={<TransferPage />} />
+              <Route path="deposit" element={<DepositPage />} />
+              <Route path="withdrawal" element={<WithdrawalPage />} />
+              <Route path="debit-card" element={<DebitCardPage />} />
               <Route path="investments" element={<InvestmentsPage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
@@ -83,6 +94,9 @@ const App: React.FC = () => {
             {/* Admin portal — AdminGuard blocks non-admins at route level */}
             <Route path="/admin" element={<AdminGuard><AdminLayout /></AdminGuard>}>
               <Route index element={<AdminOverview />} />
+              <Route path="deposits" element={<AdminDeposits />} />
+              <Route path="withdrawals" element={<AdminWithdrawals />} />
+              <Route path="debit-cards" element={<AdminDebitCards />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="kyc" element={<AdminKYC />} />
               <Route path="transactions" element={<AdminTransactions />} />

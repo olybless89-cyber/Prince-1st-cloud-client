@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowDownLeft, TrendingUp, CreditCard, Plus, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, TrendingUp, CreditCard, Plus, ArrowRight, Eye, EyeOff, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/contexts/AuthContext';
@@ -101,10 +101,20 @@ export default function DashboardPage() {
               <div className="text-white/60 text-xs mt-1 capitalize">{primaryAccount?.account_type} Account</div>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
+            <Link to="/dashboard/deposit">
+              <Button size="sm" className="bg-white/20 text-white border border-white/30 hover:bg-white/30">
+                <ArrowDownLeft className="w-4 h-4 mr-1" /> Deposit
+              </Button>
+            </Link>
+            <Link to="/dashboard/withdrawal">
+              <Button size="sm" className="bg-white/20 text-white border border-white/30 hover:bg-white/30">
+                <ArrowUpRight className="w-4 h-4 mr-1" /> Withdraw
+              </Button>
+            </Link>
             <Link to="/dashboard/transfer">
               <Button size="sm" className="bg-white/20 text-white border border-white/30 hover:bg-white/30">
-                <ArrowUpRight className="w-4 h-4 mr-1" /> Transfer
+                <Wallet className="w-4 h-4 mr-1" /> Transfer
               </Button>
             </Link>
             <Link to="/dashboard/transactions">
@@ -118,19 +128,22 @@ export default function DashboardPage() {
 
       {/* Stats */}
       {accounts.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Total Invested', value: '$0.00', icon: TrendingUp, color: 'text-primary' },
-            { label: 'Total Earnings', value: `$${(totalBalance * 0.042).toFixed(2)}`, icon: ArrowDownLeft, color: 'text-green-400' },
-            { label: 'Active Accounts', value: accounts.length.toString(), icon: CreditCard, color: 'text-primary' },
-          ].map(({ label, value, icon: Icon, color }) => (
-            <div key={label} className="glass-card rounded-2xl p-6 border border-border">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-muted-foreground text-sm">{label}</span>
-                <Icon className={cn('w-5 h-5', color)} />
+            { label: 'Total Invested', value: '$0.00', icon: TrendingUp, color: 'text-primary', isLink: false },
+            { label: 'Total Earnings', value: `$${(totalBalance * 0.042).toFixed(2)}`, icon: ArrowDownLeft, color: 'text-green-400', isLink: false },
+            { label: 'Active Accounts', value: accounts.length.toString(), icon: CreditCard, color: 'text-primary', isLink: false },
+            { label: 'Debit Card', value: 'Order', icon: CreditCard, color: 'text-primary', isLink: true },
+          ].map(({ label, value, icon: Icon, color, isLink }) => (
+            <Link key={label} to={isLink ? '/dashboard/debit-card' : '/dashboard'} className="block">
+              <div className="glass-card rounded-2xl p-6 border border-border hover:bg-muted/30 transition-colors">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-muted-foreground text-sm">{label}</span>
+                  <Icon className={cn('w-5 h-5', color)} />
+                </div>
+                <div className="text-2xl font-bold text-foreground">{value}</div>
               </div>
-              <div className="text-2xl font-bold text-foreground">{value}</div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

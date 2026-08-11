@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/db/supabase';
-import { Search, UserCog, Ban, CheckCircle, Mail, ChevronDown, ChevronUp, Edit3, X, DollarSign } from 'lucide-react';
+import { Search, UserCog, Ban, CheckCircle, Mail, ChevronDown, ChevronUp, Edit3, X, DollarSign, PlusCircle, MinusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -23,6 +23,10 @@ export default function AdminUsers() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [editUser, setEditUser] = useState<UserWithAccounts | null>(null);
   const [editBalance, setEditBalance] = useState<Record<string, string>>({});
+  const [adjustAccount, setAdjustAccount] = useState<string | null>(null);
+  const [adjustAmount, setAdjustAmount] = useState('');
+  const [adjustReason, setAdjustReason] = useState('');
+  const [adjustMode, setAdjustMode] = useState<'credit' | 'debit'>('credit');
 
   const loadUsers = useCallback(async () => {
     setLoading(true);
@@ -102,6 +106,55 @@ export default function AdminUsers() {
     const init: Record<string, string> = {};
     u.accounts.forEach(a => { init[a.id] = String(a.balance); });
     setEditBalance(init);
+    setAdjustAccount(null);
+    setAdjustAmount('');
+    setAdjustReason('');
+    setAdjustMode('credit');
+  };
+
+  const applyBalanceAdjustment = async (accountId: string) => {
+    const amount = parseFloat(adjustAmount);
+    if (isNaN(amount) || amount <= 0) { toast.error('Enter a valid amount'); return; }
+    if (!adjustReason.trim()) { toast.error('Reason is required'); return; }
+
+    const account = editUser?.accounts.find(a => a.id === accountId);
+    if (!account) return;
+
+    const delta = adjustMode === 'credit' ? amount : -amount;
+    if (account.balance + delta < 0) { toast.error('Resulting balance cannot be negative'); return; }
+
+    setActionLoading('adj_' + accountId);
+
+    const { error: updErr } = await supabase.from('bank_accounts').update({ balance: account.balance + delta }).eq('id', accountId);
+    if (updErr) {
+      toast.error('Failed to adjust balance');
+      setActionLoading(null);
+      return;
+    }
+
+    const { error: txnErr } = await supabase.from('transactions').insert({
+      account_id: accountId,
+      type: adjustMode === 'credit' ? 'deposit' : 'withdrawal',
+      status: 'completed',
+      amount: delta,
+      currency: account.currency,
+      description: `Admin ${adjustMode}: ${adjustReason.trim()}`,
+    });
+
+    if (txnErr) {
+      toast.error('Balance adjusted, but transaction log failed');
+    } else {
+      toast.success(`${adjustMode === 'credit' ? 'Credited' : 'Debited'} ${account.currency} ${amount.toFixed(2)} to account`);
+      setAdjustAccount(null);
+      setAdjustAmount('');
+      setAdjustReason('');
+      await loadUsers();
+      if (editUser) {
+        const { data: updatedAccs } = await supabase.from('bank_accounts').select('id, account_number, account_type, balance, currency, is_active').eq('user_id', editUser.id);
+        setEditUser(prev => prev ? { ...prev, accounts: updatedAccs || [], total_balance: (updatedAccs || []).reduce((s, a) => s + a.balance, 0) } : null);
+      }
+    }
+    setActionLoading(null);
   };
 
   const filtered = users.filter((u) => {
@@ -244,9 +297,7 @@ export default function AdminUsers() {
               </div>
               <div className="glass-card rounded-xl p-3 border border-border">
                 <div className="text-xs text-muted-foreground mb-1">KYC Status</div>
-                <div className={`font-semibold ${editUser?.kyc_status === 'approved' ? 'text-green-400' : editUser?.kyc_status === 'pending' ? 'text-yellow-400' : 'text-muted-foreground'}`}>
-                  {editUser?.kyc_status || 'not submitted'}
-                </div>
+                <div className="font-semibold text-muted-foreground">Manage in KYC Queue</div>
               </div>
               <div className="glass-card rounded-xl p-3 border border-border">
                 <div className="text-xs text-muted-foreground mb-1">Role</div>
@@ -287,7 +338,12 @@ export default function AdminUsers() {
                       <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3 text-xs"
                         onClick={() => saveBalance(acc.id, editBalance[acc.id] ?? String(acc.balance))}
                         disabled={actionLoading === 'bal_' + acc.id}>
-                        <CheckCircle className="w-3.5 h-3.5 mr-1" />Save
+                        <CheckCircle className="w-3.5 h-3.5 mr-1" />Set
+                      </Button>
+                      <Button size="sm" variant="ghost" className="h-9 px-3 text-xs border border-border text-muted-foreground hover:bg-muted"
+                        onClick={() => { setAdjustAccount(acc.id); setAdjustAmount(''); setAdjustReason(''); setAdjustMode('credit'); }}
+                        disabled={actionLoading?.startsWith('adj_') || actionLoading === 'bal_' + acc.id}>
+                        <PlusCircle className="w-3.5 h-3.5 mr-1" />Adjust
                       </Button>
                       <Button size="sm" variant="ghost" className={`h-9 px-3 text-xs border ${acc.is_active ? 'border-red-400/30 text-red-400 hover:bg-red-400/10' : 'border-green-400/30 text-green-400 hover:bg-green-400/10'}`}
                         onClick={() => toggleAccountStatus(acc.id, acc.is_active)}
@@ -295,6 +351,40 @@ export default function AdminUsers() {
                         {acc.is_active ? <><Ban className="w-3.5 h-3.5 mr-1" />Freeze</> : <><CheckCircle className="w-3.5 h-3.5 mr-1" />Unfreeze</>}
                       </Button>
                     </div>
+
+                    {adjustAccount === acc.id && (
+                      <div className="mt-3 p-3 rounded-xl border border-border bg-muted/30 space-y-3">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setAdjustMode('credit')}
+                            className={`flex-1 text-xs font-medium py-2 rounded-lg border ${adjustMode === 'credit' ? 'bg-primary text-primary-foreground border-primary' : 'bg-secondary border-border text-muted-foreground'}`}
+                          >
+                            <PlusCircle className="w-3 h-3 inline mr-1" />Credit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAdjustMode('debit')}
+                            className={`flex-1 text-xs font-medium py-2 rounded-lg border ${adjustMode === 'debit' ? 'bg-destructive text-destructive-foreground border-destructive' : 'bg-secondary border-border text-muted-foreground'}`}
+                          >
+                            <MinusCircle className="w-3 h-3 inline mr-1" />Debit
+                          </button>
+                        </div>
+                        <div className="relative">
+                          <DollarSign className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                          <Input type="number" min="0.01" step="0.01" placeholder="Amount" value={adjustAmount} onChange={e => setAdjustAmount(e.target.value)} className="pl-7 h-9 bg-secondary border-border text-sm" />
+                        </div>
+                        <Input type="text" placeholder="Reason for adjustment" value={adjustReason} onChange={e => setAdjustReason(e.target.value)} className="h-9 bg-secondary border-border text-sm" />
+                        <div className="flex gap-2">
+                          <Button size="sm" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 h-9 text-xs" onClick={() => applyBalanceAdjustment(acc.id)} disabled={actionLoading === 'adj_' + acc.id}>
+                            <CheckCircle className="w-3.5 h-3.5 mr-1" />Apply
+                          </Button>
+                          <Button size="sm" variant="ghost" className="flex-1 border border-border text-muted-foreground h-9 text-xs" onClick={() => setAdjustAccount(null)}>
+                            <X className="w-3.5 h-3.5 mr-1" />Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))
               }
@@ -309,4 +399,5 @@ export default function AdminUsers() {
 interface UserWithAccounts extends Profile {
   account_count: number;
   total_balance: number;
+  accounts: { id: string; account_number: string; account_type: string; balance: number; currency: string; is_active: boolean }[];
 }

@@ -3,7 +3,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   LayoutDashboard, Users, ShieldCheck, ArrowUpRight,
-  LogOut, Menu, X, ChevronRight,
+  ArrowDownLeft, CreditCard, Wallet, LogOut, Menu, X, ChevronRight,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -13,9 +13,12 @@ import GrayHavenLogo from '@/components/common/GrayHavenLogo';
 
 const navItems = [
   { path: '/admin', label: 'Overview', icon: LayoutDashboard, end: true },
+  { path: '/admin/deposits', label: 'Deposits', icon: ArrowDownLeft, end: false },
+  { path: '/admin/withdrawals', label: 'Withdrawals', icon: ArrowUpRight, end: false },
+  { path: '/admin/debit-cards', label: 'Cards', icon: CreditCard, end: false },
   { path: '/admin/users', label: 'Users', icon: Users, end: false },
   { path: '/admin/kyc', label: 'KYC Queue', icon: ShieldCheck, end: false },
-  { path: '/admin/transactions', label: 'Transactions', icon: ArrowUpRight, end: false },
+  { path: '/admin/transactions', label: 'Transactions', icon: Wallet, end: false },
 ];
 
 function NavItems({ onClick }: { onClick?: () => void }) {
@@ -75,11 +78,11 @@ export default function AdminLayout() {
       <div className="px-3 pb-6 mt-auto border-t border-border pt-4">
         <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted mb-3">
           <div className="w-8 h-8 rounded-full bg-destructive/20 flex items-center justify-center text-destructive font-bold text-xs shrink-0">
-            {(profile.first_name?.[0] || profile.username?.[0] || 'A').toUpperCase()}
+            {((profile?.first_name?.[0] || profile?.username?.[0]) || 'A').toUpperCase()}
           </div>
           <div className="min-w-0">
             <div className="text-xs font-semibold text-foreground truncate">
-              {profile.first_name || profile.username || 'Admin'}
+              {profile?.first_name || profile?.username || 'Admin'}
             </div>
             <div className="text-xs text-destructive">Administrator</div>
           </div>
