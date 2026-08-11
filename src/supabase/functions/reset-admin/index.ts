@@ -25,6 +25,14 @@ Deno.serve(async (req) => {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
+    const secret = req.headers.get("x-reset-admin-secret");
+    if (secret !== Deno.env.get("RESET_ADMIN_SECRET")) {
+      return new Response(
+        JSON.stringify({ error: "Forbidden" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const body = await req.json();
     const { email, password, role = "admin", username = "admin", create_account = false, account_type = "checking" } = body;
 
